@@ -4,26 +4,43 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<style type="text/css">
+  ul{
+    list-style: none;
+  }
 		ul li{
 			width: 35%;
 			    background-color: darkgrey;
+          margin-top: 2em;
 		}
+    input{
+      margin-bottom: 2em;
+    }
 		#tag-search{
-			    position: absolute;
-    left: 7em;
-    bottom: 13em;
+			   position: absolute;
+    left: 1.5em;
+    top: 13em;
 }
 		}
 		#tag-search input{
 			float: left;
 		}
+    #posts{
+      margin-top: 20em;
+    }
+    #date-sort{
+      margin-bottom:2em;
+    }
+    .close{
+      margin-left: 27em;
+    }
+
 	</style>
 </head>
 <body>
 	<div class="wrap">
 		 <h1>Posts</h1>
 	 <input type="text" name="posts-search" placeholder="Search posts by title" id="search"><br>
-	 <label for="date-sort">Sort posts by date</label>
+	 <label for="date-sort">Sort posts by date :</label><br>
 	 <select id="date-sort">
   <option value="ascending" >From older to newest</option>
   <option value="descending" selected>From newest to older</option>
@@ -42,122 +59,5 @@
     </ul>
 	</div>
 </body>
-  <script>
-  	let posts={
-
-  	}
-  	document.getElementById("search").addEventListener("keyup",function(){
-let ul=document.getElementById("posts");
-  //  ul.parentNode.removeChild(ul);
-  		initialiseDOM ();
-	let input = document.getElementById("search");
-  	let filter = input.value.toUpperCase();
-  	
-  	let li = ul.getElementsByTagName("li");
-  	for(let i=0;i<li.length; i++){
-  		let postDataTitle=  li[i].getElementsByTagName("span")[0];
-
-  		 if (postDataTitle.innerHTML.toUpperCase().indexOf(filter) > -1) {
-            		console.log('Matched')
-        } else {
-            li[i].parentNode.removeChild(li[i]);
-        }
-  	}
-
-  	})
- 
-  	
-  	// 3000px
-    let myList = document.querySelector('ul');
-
-    function initialiseDOM (){
-    	fetch('https://api.myjson.com/bins/152f9j')
-    .then(function(response) { return response.json(); })
-    .then(function(json) {
-      for(let i = 0; i < json.data.length; i++) {
-        var listItem = document.createElement('li');
-        listItem.innerHTML +=  '<span>'+json.data[i].title+'</span><br>';
-        listItem.innerHTML+='<img src='+json.data[i].image+'><br>';
-        listItem.innerHTML +='<span>'+json.data[i].description + '</span><br>';
-        listItem.innerHTML +='<span class="date">'+json.data[i].createdAt+ '</span><br>';
-        listItem.innerHTML +='<span>'+json.data[i].tags+'</span><br>';
-      //  console.log();
-        myList.appendChild(listItem);
-        let closeSign = document.createTextNode("\u00D7");
-        let close = document.createElement("SPAN");
-        close.className = "close";
-         close.appendChild(closeSign);
-         listItem.appendChild(close);
-      }
-    });
-    }
-    
-    let dateSortSelect = document.getElementById("date-sort");
-    dateSortSelect.addEventListener("change",function(){
-    	if(dateSortSelect.value=="descending"){
-	sortDescendingList();
-    	}else
-sortAscendingList();
-    	
-    	});
-    function sortAscendingList() {
-  let list, i, switching, b, shouldSwitch;
-  list = document.getElementById("posts");
-  switching = true;
-  /*Make a loop that will continue until
-  no switching has been done:*/
-  while (switching) {
-    //start by saying: no switching is done:
-    switching = false;
-    b = list.getElementsByTagName("LI");
-    //Loop through all list-items:
-    for (i = 0; i < (b.length - 1); i++) {
-      shouldSwitch = false;
-      if (document.querySelectorAll("#posts>li .date")[i].textContent > document.querySelectorAll("#posts>li .date")[i+1].textContent) {
-        shouldSwitch = true;
-        break;
-      }
-    }
-    if (shouldSwitch) {
-      b[i].parentNode.insertBefore(b[i + 1], b[i]);
-      switching = true;
-      console.log(new Date(document.querySelectorAll("#posts>li .date")[i].textContent).getMilliseconds());
-    }
-  }
-}
-
-function sortDescendingList() {
-	let list, i, switching, b, shouldSwitch;
-  list = document.getElementById("posts");
-  switching = true;
-  while (switching) {
-    switching = false;
-    b = list.getElementsByTagName("LI");
-    for (i = 0; i < (b.length - 1); i++) {
-      shouldSwitch = false;
-      if (document.querySelectorAll("#posts>li .date")[i].textContent < document.querySelectorAll("#posts>li .date")[i+1].textContent) {
-        shouldSwitch = true;
-        break;
-      }
-    }
-    if (shouldSwitch) {
-      b[i].parentNode.insertBefore(b[i + 1], b[i]);
-      switching = true;
-}
-}};
-window.onload = function(){
-	initialiseDOM ();
-}
-
-
-
- window.onscroll = function(){
-
-  	let scrolled = window.pageYOffset || document.documentElement.scrollTop;
-  	if(scrolled>3000){
-
-  	}
-  	} 
- 	
-  </script>
+  <script src="script.js"></script>
 </html>
