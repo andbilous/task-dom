@@ -1,0 +1,72 @@
+body{
+	padding:30px 0;
+}
+
+.to-do-header{
+	background:url(https://cdn.tutsplus.com/vector/uploads/legacy/tuts/147_Landscape_Wallpaper/Vector_Landscape.jpg);
+	background-size:cover;
+	background-position:center center;
+}
+
+.to-do-header input,.to-do-header .btn{
+	display:block;
+	border:none;
+	padding:10px 20px;
+}
+
+.to-do-header .btn{
+	border-radius:0;
+}
+
+.to-do-header .btn:hover{
+	background:silver;
+}
+
+.to-do-header .to-do-input form{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	margin-bottom:20px;
+}
+
+.to-do-header h1{
+	text-align:center;
+}
+
+.to-do-body ul{
+	list-style:none;
+	padding:0;
+}
+
+.to-do-body ul div{
+	cursor:pointer;
+	display:flex;
+	align-items:center;
+	justify-content:space-between;
+}
+
+.to-do-body ul div:hover{
+	background:silver;
+	transition:.3s;
+}
+
+.to-do-body ul span.line-through{
+	text-decoration:line-through;
+}
+
+.to-do-body ul span.delete:hover{
+	cursor:pointer;
+	background:grey;
+	transition:.3s;
+}
+
+.to-do-body ul span.delete{
+	padding:10px 20px;
+}
+
+.to-do-body ul span.item{
+	padding:10px 0;
+	padding-left:20px;
+	width:100%;
+}
+
