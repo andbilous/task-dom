@@ -7,82 +7,82 @@
   ul{
     list-style: none;
   }
-		ul li{
-			width: 35%;
-			    background-color: darkgrey;
-          margin-top: 12em;
-              padding: 1em;
-                  height: 500px;
-		}
-    li img{
-           margin-left: 30%;
-    margin-top: 9%;
+  ul li{
+   width: 35%;
+   background-color: darkgrey;
+   margin-top: 12em;
+   padding: 1em;
+   height: 500px;
+ }
+ li img{
+   margin-left: 30%;
+   margin-top: 9%;
 
-    }
-    .title{
-      font-size: 20px;
-    margin-left: 20%;
-    }
-    .postbody{
-      margin-left: 3em;
-    }
-		#tag-search{
-			   position: absolute;
-    left: 1.5em;
-    top: 13em;
+ }
+ .title{
+  font-size: 20px;
+  margin-left: 20%;
 }
-		.date{
-position: relative;
-    top: 4em;
-    left: 6em;
+.postbody{
+  margin-left: 3em;
 }
-    
-    .tags{
-    position: relative;
-    top: 8em;
-    left: 7em;
-    }
-    #search{
-      margin-bottom: 1em;
-    }
-		#tag-search input{
-			float: left;
-		}
-    #posts{
-      margin-top: 5em;
-    }
-    #date-sort{
-      margin-bottom:2em;
-    }
-    .close{
-      margin-left: 14em;
-    font-size: 40px;
-    }
+#tag-search{
+  position: absolute;
+  left: 1.5em;
+  top: 13em;
+}
+.date{
+  position: relative;
+  top: 4em;
+  left: 6em;
+}
 
-	</style>
+.tags{
+  position: relative;
+  top: 8em;
+  left: 7em;
+}
+#search{
+  margin-bottom: 1em;
+}
+#tag-search input{
+ float: left;
+}
+#posts{
+  margin-top: 5em;
+}
+#date-sort{
+  margin-bottom:2em;
+}
+.close{
+  margin-left: 14em;
+  font-size: 40px;
+}
+
+</style>
 </head>
 <body>
 	<div class="wrap">
-		 <h1>Posts</h1>
-	 <input type="text" name="posts-search" placeholder="Search posts by title" id="search"><br>
-	 <label for="date-sort">Sort posts by date :</label><br>
-	 <select id="date-sort">
-  <option value="ascending" >From older to newest</option>
-  <option value="descending" selected>From newest to older</option>
-</select><br>
-<label for="tag-search">Search by tags :</label>
-<div id="tag-search">
-  <input type="checkbox" name="sport" value="Sport">Sport<br>
-  <input type="checkbox" name="tech" value="Tech">Tech<br>
-  <input type="checkbox" name="business" value="Business">Business<br>
-   <input type="checkbox" name="showbiz" value="Showbiz">Showbiz<br>
-   <input type="checkbox" name="culture" value="Culture">Culture<br>
-   <input type="checkbox" name="sport" value="Sport">Sport<br>
+   <h1>Posts</h1>
+   <input type="text" name="posts-search" placeholder="Search posts by title" id="search"><br>
+   <label for="date-sort">Sort posts by date :</label><br>
+   <select id="date-sort">
+    <option value="ascending" >From older to newest</option>
+    <option value="descending" selected>From newest to older</option>
+  </select><br>
+  <label for="tag-search">Search by tags :</label>
+  <div id="tag-search">
+    <input type="checkbox" name="sport" value="Sport">Sport<br>
+    <input type="checkbox" name="tech" value="Tech">Tech<br>
+    <input type="checkbox" name="business" value="Business">Business<br>
+    <input type="checkbox" name="showbiz" value="Showbiz">Showbiz<br>
+    <input type="checkbox" name="culture" value="Culture">Culture<br>
+    <input type="checkbox" name="sport" value="Sport">Sport<br>
     <input type="checkbox" name="politics" value="Politics">Politics<br>
+  </div>
+  <ul id="posts">
+  </ul>
 </div>
-    <ul id="posts">
-    </ul>
-	</div>
 </body>
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </html>
