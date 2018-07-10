@@ -38,6 +38,9 @@ console.log(filteredPosts.length)
 document.getElementById("tag-search").addEventListener("change",function(){
 
 });
+
+
+
 let datesortchoice=document.getElementById("date-sort");
 
 datesortchoice.addEventListener("change",function(){
@@ -90,21 +93,23 @@ let postsList=document.getElementById("posts");
   for (let i =0; i < filteredPosts.length; i++) {
     var listItem = document.createElement('li');
     listItem.innerHTML='<span>'+i+'</span><br>';
-    listItem.innerHTML +=  '<span>'+filteredPosts[i].title+'</span><br>';
+    listItem.innerHTML +=  '<span class="title">'+filteredPosts[i].title+'</span><br>';
     listItem.innerHTML +='<img src='+filteredPosts[i].image+'><br>';
-    listItem.innerHTML +='<span>'+filteredPosts[i].description + '</span><br>';
+    listItem.innerHTML +='<span class="postbody">'+filteredPosts[i].description + '</span><br>';
     listItem.innerHTML +='<span class="date">'+filteredPosts[i].createdAt+ '</span><br>';
-    listItem.innerHTML +='<span>'+filteredPosts[i].tags+'</span><br>';
+    listItem.innerHTML +='<span class="tags">'+filteredPosts[i].tags+'</span><br>';
       postsList.appendChild(listItem);
       let closeSign = document.createTextNode("\u00D7");
-      let close = document.createElement("SPAN");
+      let close = document.createElement("button");
       close.className = "close";
+      close.onclick=function(){
+        close.parentNode.remove();
+      }
       close.appendChild(closeSign);
       listItem.appendChild(close);
     }
   };
 
- // let posts=[];
   function fetchPosts(){
     fetch('https://api.myjson.com/bins/152f9j')
     .then(function(response) { return response.json(); })
@@ -114,18 +119,6 @@ let postsList=document.getElementById("posts");
     })
   }
 
-function searchByWord(searchWord,filteredPosts){
-
-}
-function searchByTags(tags,filteredPosts){
-
-}
-
-
-
-
-
 fetchPosts();
 
-//  setTimeout(renderPosts(fetchPosts()),1000);
 
