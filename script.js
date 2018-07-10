@@ -14,7 +14,9 @@ document.getElementById("tag-search").addEventListener("change",function(){
 let datesortchoice=document.getElementById("date-sort");
 
 datesortchoice.value=localStorage.getItem("sortingType");
-
+if(localStorage.getItem("sortingType").length==0){
+  datesortchoice.value="descending";
+}
 datesortchoice.addEventListener("change",function(){
   localStorage.setItem('sortingType', datesortchoice.value);
   let mathchedPosts=[];
