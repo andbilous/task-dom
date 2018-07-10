@@ -3,10 +3,13 @@ let post={}
 
 
 document.getElementById("tag-search").addEventListener("change",function(){
-
+ let tagInputs= document.querySelectorAll("#tag-search>input");
+  for(let i=0;i<tagInputs;i++){
+    if(tagInputs[i].checked==true){
+      console.log(tagInputs[0].value);
+    }
+  }
 });
-
-
 
 let datesortchoice=document.getElementById("date-sort");
 
@@ -47,7 +50,7 @@ document.getElementById("search").addEventListener("keyup",function(){
   let mathchedPosts=[];
   for(let i=0;i<posts.length;i++){
     if(posts[i].title.indexOf(searchString)>=0){
-      
+
       mathchedPosts.push(posts[i]);
     }
   }
