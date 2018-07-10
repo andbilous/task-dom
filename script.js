@@ -1,39 +1,6 @@
 let posts=[];
 let post={}
-let filterQuery={
-  searchString:"",
-  postsCount:null,
-  tags:"",
-  dateSort:"descending"
 
-};
-
-function filter(posts,filterQuery)
-{
-  let i;
-  let filteredPosts=[];
-  if(filterQuery.postsCount==10){
-      filteredPosts=posts.slice(0,10);
-      console.log(filteredPosts);
-  }
-  if(filterQuery.postsCount==20){
-      filteredPosts=posts.slice(11,20);
-
-      console.log(filteredPosts);
-  }
-  if(filterQuery.postsCount==30){
-   filteredPosts=posts.slice(21,30);
-  }
-  if(filterQuery.postsCount==40){
-    filteredPosts=posts.slice(31,40);
-  }
-  if(filterQuery.postsCount==50){
-filteredPosts=posts.slice(41,50);
-  }
-
-console.log(filteredPosts.length)
-  return filteredPosts;
-};
 
 document.getElementById("tag-search").addEventListener("change",function(){
 
@@ -43,7 +10,10 @@ document.getElementById("tag-search").addEventListener("change",function(){
 
 let datesortchoice=document.getElementById("date-sort");
 
+datesortchoice.value=localStorage.getItem("sortingType");
+
 datesortchoice.addEventListener("change",function(){
+  localStorage.setItem('sortingType', datesortchoice.value);
   let mathchedPosts=[];
   mathchedPosts=posts;
   if(datesortchoice.value=="ascending"){
@@ -85,6 +55,50 @@ renderPosts(mathchedPosts);
 });
 
 
+window.onscroll=function(){
+  let scrolled = window.pageYOffset || document.documentElement.scrollTop;
+    if(scrolled<6900){
+      for(let i=10;i<posts.length;i++){
+        document.querySelectorAll("#posts>li")[i].style.display = 'none';
+      }
+      return 0;
+    }
+    if(scrolled>=6900&&scrolled<14200){
+      for(let i=20;i<posts.length;i++){
+        document.querySelectorAll("#posts>li")[i].style.display = 'none';
+      }
+      for(let i=10;i<20;i++){
+        document.querySelectorAll("#posts>li")[i].style.display ='block';
+      }
+    return 0;
+    }
+
+    if(scrolled>=14200&&scrolled<21400){
+      for(let i=30;i<posts.length;i++){
+        document.querySelectorAll("#posts>li")[i].style.display = 'none';
+      }
+      for(let i=10;i<30;i++){
+        document.querySelectorAll("#posts>li")[i].style.display ='block';
+      }
+    return 0;
+    }
+    if(scrolled>=21400&&scrolled<28700){
+      for(let i=40;i<posts.length;i++){
+        document.querySelectorAll("#posts>li")[i].style.display = 'none';
+      }
+      for(let i=10;i<40;i++){
+        document.querySelectorAll("#posts>li")[i].style.display ='block';
+      }
+    return 0;
+    }
+    if(scrolled>=28700){
+      for(let i=10;i<50;i++){
+        document.querySelectorAll("#posts>li")[i].style.display ='block';
+      }
+    return 0;
+    }
+}
+
 function renderPosts(filteredPosts){
 let postsList=document.getElementById("posts");
     while(postsList.hasChildNodes()){
@@ -92,7 +106,6 @@ let postsList=document.getElementById("posts");
     }
   for (let i =0; i < filteredPosts.length; i++) {
     var listItem = document.createElement('li');
-    listItem.innerHTML='<span>'+i+'</span><br>';
     listItem.innerHTML +=  '<span class="title">'+filteredPosts[i].title+'</span><br>';
     listItem.innerHTML +='<img src='+filteredPosts[i].image+'><br>';
     listItem.innerHTML +='<span class="postbody">'+filteredPosts[i].description + '</span><br>';
