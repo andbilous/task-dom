@@ -1,142 +1,213 @@
-let posts=[];
-let post={}
+function createNode(element) {
+  return document.createElement(element);
+}
 
+function appendChildtoParent(parent, element) {
+  return parent.appendChild(element);
+}
+function getDate(str) {
+  const date = new Date(str)
+  return `<span>created at: </span> ${date.getDay()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+}
+function sortAscending(posts) {
+  localStorage.setItem(sorting, 'ascending');
+  const postsSorted = posts.sort((a, b) => {
+    const dateA = new Date(a.createdAt), 
+          dateB = new Date(b.createdAt);
+    return dateB < dateA ? 1 : -1;
+  }); 
+  filteredPosts = postsSorted;
+  renderPost(postsSorted);
+}
 
-document.getElementById("tag-search").addEventListener("change",function(){
- let tagInputs= document.querySelectorAll("#tag-search>input");
-  for(let i=0;i<tagInputs;i++){
-    if(tagInputs[i].checked==true){
-      console.log(tagInputs[0].value);
+function sortDescending(posts) {
+  localStorage.setItem(sorting, 'descending');
+  const postsSorted = posts.sort((a, b) => {
+    const dateA = new Date(a.createdAt), 
+          dateB = new Date(b.createdAt);
+    return dateB > dateA ? 1 : -1;
+  }); 
+ filteredPosts = postsSorted;
+  renderPost(postsSorted);
+}
+
+// sort by tags
+let filterTags = [];
+document.addEventListener('click', function (event) {
+  const el = event.target;
+  if(el.classList.contains('tag')) {
+    el.classList.toggle('selected');
+    filteredPosts = parseArray(posts);
+    const tagIngex = filterTags.indexOf(el.id);
+    if(tagIngex === -1) {
+      filterTags.push(el.id);
+    } else {
+      filterTags.splice(tagIngex, 1);
     }
+    console.warn(filterTags);
+    if(filterTags.length > 0) {
+    filterTags.map(tag => {
+      filteredPosts.map(post => {
+        if(post.tags.indexOf(tag) !== -1) {
+          post.index = post.index + 1; 
+        }
+      });
+    });
+    const sortedTags = filteredPosts
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt), dateB = new Date(b.createdAt);
+      if (b.index > a.index) {
+        return 1;
+      } else if (b.index === a.index) {
+        return dateB > dateA ? 1 : -1;
+      } else {
+        return -1;
+      }
+    })
+    .filter(post => post.index !== 0);
+    filteredPosts = sortedTags;
+    renderPost(sortedTags);
+    } else {
+    	filteredPosts = parseArray(posts);
+    renderPost(filteredPosts);
+    }
+  }
+
+
+  if(el.classList.contains('close')) {
+    const id = el.id;
+    const indexFiltered = filteredPosts.map(p => p.id).indexOf(Number(id));
+    const index = posts.map(p => p.id).indexOf(Number(id));
+    filteredPosts.splice(indexFiltered, 1);
+    posts.splice(index, 1);
+    console.log(posts, index, indexFiltered, id);
+    renderPost(filteredPosts, limit);
   }
 });
 
-let datesortchoice=document.getElementById("date-sort");
-
-datesortchoice.value=localStorage.getItem("sortingType");
-if(localStorage.getItem("sortingType").length==0){
-  datesortchoice.value="descending";
-}
-datesortchoice.addEventListener("change",function(){
-  localStorage.setItem('sortingType', datesortchoice.value);
-  let mathchedPosts=[];
-  mathchedPosts=posts;
-  if(datesortchoice.value=="ascending"){
-    mathchedPosts=  mathchedPosts.sort(function (a, b) {
-      if (a.createdAt > b.createdAt) {
-        return 1;
-      }
-      if (a.createdAt < b.createdAt) {
-        return -1;
-      }
-      return 0;
-    });
-  }
-  else if(datesortchoice.value=="descending"){
-    mathchedPosts=  mathchedPosts.sort(function (a, b) {
-      if (a.createdAt < b.createdAt) {
-        return 1;
-      }
-      if (a.createdAt > b.createdAt) {
-        return -1;
-      }
-      return 0;
-    });
-  }
-  renderPosts(mathchedPosts);
-  
-})
-
-document.getElementById("search").addEventListener("keyup",function(){
-  let searchString=document.getElementById("search").value;
-  let mathchedPosts=[];
-  for(let i=0;i<posts.length;i++){
-    if(posts[i].title.indexOf(searchString)>=0){
-
-      mathchedPosts.push(posts[i]);
-    }
-  }
-  renderPosts(mathchedPosts);
-});
-
-
-window.onscroll=function(){
-  let scrolled = window.pageYOffset || document.documentElement.scrollTop;
-  if(scrolled<6900){
-    for(let i=10;i<posts.length;i++){
-      document.querySelectorAll("#posts>li")[i].style.display = 'none';
-    }
-    return 0;
-  }
-  if(scrolled>=6900&&scrolled<14200){
-    for(let i=20;i<posts.length;i++){
-      document.querySelectorAll("#posts>li")[i].style.display = 'none';
-    }
-    for(let i=10;i<20;i++){
-      document.querySelectorAll("#posts>li")[i].style.display ='block';
-    }
-    return 0;
-  }
-
-  if(scrolled>=14200&&scrolled<21400){
-    for(let i=30;i<posts.length;i++){
-      document.querySelectorAll("#posts>li")[i].style.display = 'none';
-    }
-    for(let i=10;i<30;i++){
-      document.querySelectorAll("#posts>li")[i].style.display ='block';
-    }
-    return 0;
-  }
-  if(scrolled>=21400&&scrolled<28700){
-    for(let i=40;i<posts.length;i++){
-      document.querySelectorAll("#posts>li")[i].style.display = 'none';
-    }
-    for(let i=10;i<40;i++){
-      document.querySelectorAll("#posts>li")[i].style.display ='block';
-    }
-    return 0;
-  }
-  if(scrolled>=28700){
-    for(let i=10;i<50;i++){
-      document.querySelectorAll("#posts>li")[i].style.display ='block';
-    }
-    return 0;
-  }
+function getMarginFromBottom () {
+  return Math.max(document.body.offsetHeight 
+    - (window.pageYOffset + window.innerHeight), 0);
 }
 
-function renderPosts(filteredPosts){
-  let postsList=document.getElementById("posts");
-  while(postsList.hasChildNodes()){
-    postsList.removeChild(postsList.lastChild);
+function scrollTop() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+  const sort = localStorage.getItem(sorting);
+  filteredPosts = parseArray(posts);
+  limit = 10;
+  sort === 'descending' ? sortDescending(filteredPosts) : sortAscending(filteredPosts);
+  if(filterTags.length > 0) {
+    filterTags.map(id => {
+      document.getElementById(id).classList.remove('selected');
+    })
   }
-  for (let i =0; i < filteredPosts.length; i++) {
-    var listItem = document.createElement('li');
-    listItem.innerHTML +=  '<span class="title">'+filteredPosts[i].title+'</span><br>';
-    listItem.innerHTML +='<img src='+filteredPosts[i].image+'><br>';
-    listItem.innerHTML +='<span class="postbody">'+filteredPosts[i].description + '</span><br>';
-    listItem.innerHTML +='<span class="date">'+filteredPosts[i].createdAt+ '</span><br>';
-    listItem.innerHTML +='<span class="tags">'+filteredPosts[i].tags+'</span><br>';
-    postsList.appendChild(listItem);
-    let closeSign = document.createTextNode("\u00D7");
-    let close = document.createElement("button");
-    close.className = "close";
-    close.onclick=function(){
-      close.parentNode.remove();
-    }
-    close.appendChild(closeSign);
-    listItem.appendChild(close);
-  }
-};
+  filterTags = [];
+}
 
-function fetchPosts(){
-  fetch('https://api.myjson.com/bins/152f9j')
-  .then(function(response) { return response.json(); })
-  .then(function(json) {
-    posts=json.data;
-    renderPosts(posts);
+function renderPost(posts, _limit = 10) {
+  while (div.firstChild) {
+    div.removeChild(div.firstChild);
+  }
+  if (_limit > posts.length) {
+    _limit = posts.length;
+  }
+  for (let i = 0; i < _limit; i++) {
+    let post = posts[i];
+    let postTitle = createNode('h4'),
+        postDescription = createNode('p'),
+        postImage = createNode('img'),
+        postTags = createNode('div'),
+        postDate = createNode('p'),
+        closePost = createNode('i');  
+    closePost.id = post.id;
+    closePost.innerHTML = '&times;';
+    closePost.classList.add('close');
+    postTitle.innerHTML = post.title;
+    postDescription.innerHTML = post.description;
+    postImage.src = post.image;
+    postDate.innerHTML = getDate(post.createdAt);
+
+    post.tags.map(function(tag) {
+      let tagSpan = createNode('span');
+      tagSpan.innerHTML = tag;
+      appendChildtoParent(postTags, tagSpan);
+    });
+    postTags.classList.add('tags-wrp');
+    postDate.classList.add('created-at');
+    appendChildtoParent(div, postTitle);
+    appendChildtoParent(div, closePost);
+    appendChildtoParent(div, postImage);
+    appendChildtoParent(div, postDescription);
+    appendChildtoParent(div, postDate);
+    appendChildtoParent(div, postTags);
+    appendChildtoParent(postsWrapper, div);
+  };
+}
+
+
+const tagSearch = document.getElementById('tag-search');
+const search = document.getElementById('search');
+const postsWrapper = document.getElementById('posts');
+const url = 'https://api.myjson.com/bins/152f9j';
+const sorting = 'sorting';
+let limit = 10;
+let div = createNode('div');
+let posts = [];
+let filteredPosts = [];
+
+fetch(url)
+  .then((resp) => resp.json())
+  .then(function(data) {
+    posts = data.data.map((post, i) => ({...post, index: 0, id: i}));    
+    filteredPosts = parseArray(posts);
+    const sort = localStorage.getItem(sorting);
+    const sortType = sort === null ? 'descending' : sort;
+    sortType === 'descending' ? sortDescending(filteredPosts) : sortAscending(filteredPosts);
+    let tags = [];
+    posts.map(post => {
+      post.tags.map(tag => {
+        if(tags.indexOf(tag) === -1) {
+          tags.push(tag);
+        }
+      })
+    })
+    tags.map(tag => {
+      const tagBtn = createNode('button');
+      tagBtn.innerHTML = tag;
+      tagBtn.id = tag;
+      tagBtn.classList.add('tag');
+      appendChildtoParent(tagSearch, tagBtn);
+    });
   })
+  .catch(function(error) {
+  console.log(JSON.stringify(error));
+  });  
+
+
+const dateSort =document.getElementById('dateSort');
+dateSort.addEventListener("change",  function(){
+ if(dateSort.value=="ascending"){
+  sortAscending(filteredPosts)
 }
+else 
+if(dateSort.value=="descending"){
+sortDescending(filteredPosts) ;
+}
+});
 
-fetchPosts();
 
 
+search.addEventListener('input', function(event){
+  filteredPosts = parseArray(posts).filter(post => post.title.includes(this.value)); 
+  renderPost(filteredPosts);
+});
+document.addEventListener('scroll', function() {
+  if(getMarginFromBottom() < 100){
+    renderPost(filteredPosts, limit);
+    limit = limit + 10;
+  }
+});
+function parseArray(arr) {
+  return JSON.parse(JSON.stringify(arr))
+}
